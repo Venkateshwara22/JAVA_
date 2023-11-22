@@ -1,0 +1,13 @@
+{
+  "movies": [
+    {
+      "name": "The Imitation Game",
+      "year": "2014",
+      "cast": "\t Benedict Cumberbatch Keira Knightley Matthew Goode Rory Kinnear Charles Dance Mark Strong",
+      "synopsis": "Alan Turing, a British mathematician, joins the cryptography team to decipher the German enigma code. With the help of his fellow mathematicians, he builds a machine to crack the codes.",
+      "rating": "4/5",
+      "active": true,
+      "id": 1
+    }
+  ]
+}

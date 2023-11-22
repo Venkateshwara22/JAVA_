@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('./bg3.jpg'); /* Replace 'bg.jpg' with your image file name */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  
+  .container {
+    background: transparent;
+  }
+  
+  .table {
+    background: transparent;
+  }
+  
