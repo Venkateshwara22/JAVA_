@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Entities.Avenger>
+
+<style>
+    body {
+        background: url('https://images3.alphacoders.com/120/1205437.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff; /* Set text color to white for better visibility */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 5px solid #000; /* Thick border */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        color: #fff; /* Set text color to white for better visibility */
+    }
+
+    th, td {
+        border: 2px solid #000; /* Thin border for table cells */
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #333; /* Dark gray background for header */
+    }
+</style>
+
+<h1 style="color: white;">List of Avengers</h1>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Age</th>
+            <th>Power</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var av in Model)
+        {
+            <tr>
+                <td>@av.Id</td>
+                <td>@av.Name</td>
+                <td>@av.Location</td>
+                <td>@av.Age</td>
+                <td>@av.Power</td>
+                <td>@av.Created</td>
+                <td>@av.Updated</td>
+            </tr>
+        }
+    </tbody>
+</table>
