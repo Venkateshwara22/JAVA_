@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -43,4 +45,20 @@ public class bikesservice {
     public List<bikes> getbrand(String br){
     	return brepo.getbrand(br);
     }
+    
+    public List<String> getBikesinPriceRange(int minPrice, int maxPrice){
+    	return brepo.getBikesinPriceRange(minPrice, maxPrice);
+    }
+    
+   
+    public Map<Integer, String> getBikeAndBrand(){
+    	List<Object []> result = brepo.getBikeAndBrand();
+    	Map<Integer, String> BikeAndBrand = new HashMap<>();
+    	for(Object[] row:result) {
+    		int bikeid = (int) row[0];
+    		String brand = (String) row[1];
+    		BikeAndBrand.put(bikeid, brand);
+    	}
+    	return BikeAndBrand;
+    	}
 }

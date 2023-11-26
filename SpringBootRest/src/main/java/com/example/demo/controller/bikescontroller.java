@@ -1,8 +1,9 @@
 	package com.example.demo.controller;
 	
 	import java.util.List;
-	
-	import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.web.bind.annotation.GetMapping;
 	import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,4 +45,15 @@ import org.springframework.web.bind.annotation.RestController;
 		public List<bikes> getBrand(@RequestParam("br") String brand){
 			return bkservice.getbrand(brand);
 		}
+		
+		@GetMapping("/getbikesinbudget")
+		public List<String> getBikesinPriceRange(@RequestParam("minPrice") int minPrice, @RequestParam("maxPrice") int maxPrice){
+			return bkservice.getBikesinPriceRange(minPrice, maxPrice);
+		}
+		
+		@GetMapping("/bikeAndbrand")
+		public Map<Integer, String> getBikeAndBrand(){
+			return bkservice.getBikeAndBrand();
+		}
+		
 	}
