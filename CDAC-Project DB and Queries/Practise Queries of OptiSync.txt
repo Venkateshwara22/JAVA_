@@ -1,0 +1,262 @@
+1. Can you provide a list of clients along with the total number
+of orders placed by each client and the total quantity of 
+products ordered, sorted in descending order of the total number of orders 
+
+select c.client_name, count(o.order_id) as total_orders, sum(o.product_qty) as total_quantity
+from client c
+join orders o
+on c.client_id = o.client_id
+group by c.client_name
+order by total_orders desc;
+
+
++-----------------------------+--------------+----------------+
+| client_name                 | total_orders | total_quantity |
++-----------------------------+--------------+----------------+
+| Royal Enfield               |            3 |            350 |
+| Maruti Suzuki Limited       |            1 |            150 |
+| Godrej Group                |            1 |            170 |
+| Bajaj Auto                  |            0 |           NULL |
+| Mahindra & Mahindra Limited |            0 |           NULL |
+| Larsent & Toubro Limited    |            0 |           NULL |
+| Dabur India Limited         |            0 |           NULL |
+| Hindustan Unilever Limited  |            0 |           NULL |
+| Apollo Tyres                |            0 |           NULL |
++-----------------------------+--------------+----------------+
+
+
+
+2. Please list the products that have been ordered, along with the total quantity 
+ordered for each product. Exclude products that haven't been ordered at all, and 
+sort the list by the total ordered quantity in descending order.
+
+select pd.product_name, coalesce(sum(o.product_qty), 0) as total_ordered_qty
+from product pd
+join orders o on pd.product_id = o.product_id
+group by pd.product_name
+having sum(o.product_qty) > 0 
+order by total_ordered_qty desc;
+
++----------------+-------------------+
+| product_name   | total_ordered_qty |
++----------------+-------------------+
+| karan          |               270 |
+| flage coupling |               150 |
+| Laptop         |               150 |
+| spur gear      |               100 |
++----------------+-------------------+
+
+3. Number of machines of each company
+
+select m.machine_name, c.company_name, coalesce(count(m.machine_id), 0) as no_of_machines
+from machines m
+join company c
+on  m.company_id = c.company_id
+group by m.machine_name, c.company_name
+order by m.machine_name;
+
+
++-------------------+--------------------+----------------+
+| machine_name      | company_name       | No_of_Machines |
++-------------------+--------------------+----------------+
+|                   | Ashok Leyland      |              1 |
+| drill machine     | Ashok Leyland      |              1 |
+| Grinding          | Ashok Leyland      |              1 |
+| Hand Polishimg    | Ashok Leyland      |              1 |
+| Lathe Machine     | Ashok Leyland      |              1 |
+| Lathe machine     | Styaam induastries |              1 |
+| ScrewDriver       | Ashok Leyland      |              1 |
+| Top Drill machine | Ashok Leyland      |              1 |
+| VMC               | Ashok Leyland      |              1 |
++-------------------+--------------------+----------------+
+
+4. Counting parts for products
+
+select p.part_name, count(pr.product_id) as total_parts_for_product
+from parts p
+join product pr on p.product_id = pr.product_id
+group by p.part_name 
+order by total_parts_for_product;
+
+
++-----------+-------------------------+
+| part_name | total_parts_for_product |
++-----------+-------------------------+
+| fef       |                       1 |
+| dfdbf     |                       1 |
+| xxxxcc    |                       1 |
+| fork      |                       1 |
+| pin       |                       1 |
+| Cake      |                       1 |
+| chager    |                       1 |
++-----------+-------------------------+
+
+
+5. Company List and there plans 
+
+select c.company_name, p.plan_name
+from company c
+join plans p on p.plan_id = c.plan_id
+order by company_name;
+
++-------------------------------------------+-----------+
+| company_name                              | plan_name |
++-------------------------------------------+-----------+
+| 1K2K Dosing & Dispensing Pvt Ltd. Pune    | Gold      |
+| 360 Degree Media. Pune                    | Silver    |
+| 3c It Solutions & Telecoms India Pvt Ltd. | Bronze    |
+| 3kg weight gain                           | Silver    |
+| Advita Biotech                            | Bronze    |
+| Ajayay & naru companies                   | Bronze    |
+| Ashok Leyland                             | Silver    |
+| ChatGPT Manufacturing                     | Silver    |
+| dfvdv                                     | Silver    |
+| efhevwfhv                                 | Silver    |
+| nwqfkje                                   | Silver    |
+| Optisync Pvt Ltd.                         | Gold      |
+| sfhdsgfhhrj                               | Silver    |
+| Shirish Gaikwad                           | Silver    |
+| Styaam induastries                        | Silver    |
++-------------------------------------------+-----------+
+
+
+6. Specfic Company with its product list
+
+ select p.product_name, c.company_name
+    -> from product p
+    -> right join company c on p.company_id = c.company_id
+    -> where c.company_id = 3;
++--------------+------------------	
+
+	+--------------+-------------------------------------------+
+| product_name | company_name                              |
++--------------+-------------------------------------------+
+| helical gear | 3c It Solutions & Telecoms India Pvt Ltd. |
++--------------+-------------------------------------------+
+
+7. List of parts for specific product
+
+select pr.product_name , p.part_name
+from parts p
+left join product pr on p.product_id = pr.product_id
+order by pr.product_name;
+
++----------------+-----------+
+| product_name   | part_name |
++----------------+-----------+
+| flage coupling | fork      |
+| flage coupling | pin       |
+| hfjdh          | xxxxcc    |
+| karan          | fef       |
+| karan          | dfdbf     |
+| Laptop         | chager    |
+| Shirish        | Cake      |
++----------------+-----------+
+
+8. Raw material for a part and a part for a product.
+
+select parts.part_name,product.product_name,raw_materials.name as "raw_material" 
+from parts 
+join product on product.product_id=parts.product_id
+join raw_materials on raw_materials.part_id=parts.part_id;
+
++---------------+--------------------+--------------+
+| part_name     | product_name       | raw_material |
++---------------+--------------------+--------------+
+| Driving Shaft | Universal Coupling | Shaft        |
+| Hub           | Universal Coupling | Hub          |
+| Flange        | Universal Coupling | flange       |
+| Key           | Universal Coupling | key          |
++---------------+--------------------+--------------+
+
+9. Specific company's data reagrding its product, parts and raw material
+
+select company.company_name, parts.part_name,product.product_name,raw_materials.name as "raw_material" 
+from parts
+join product on product.product_id=parts.product_id
+join raw_materials on raw_materials.part_id=parts.part_id
+join company on company.company_id=product.company_id;
+
++--------------------+-----------+----------------+---------------+
+| company_name       | part_name | product_name   | raw_material  |
++--------------------+-----------+----------------+---------------+
+| Ashok Leyland      | fork      | flage coupling | xs            |
+| Ashok Leyland      | fork      | flage coupling | casted steel  |
+| Ashok Leyland      | Cake      | Shirish        | bread         |
+| Styaam induastries | chager    | Laptop         | SMPS          |
++--------------------+-----------+----------------+---------------+
+
+10. Total orders sorted as per dates
+
+select count(o.order_id),c.company_name, o.start_date
+from orders o,company c
+where 
+c.company_id=2
+group by o.start_date;
+
++-------------------+------------------------+----------------------------+
+| count(o.order_id) | company_name           | start_date                 |
++-------------------+------------------------+----------------------------+
+|                 1 | 360 Degree Media. Pune | 2023-08-23 00:00:00.000000 |
+|                 2 | 360 Degree Media. Pune | 2023-08-29 00:00:00.000000 |
+|                 1 | 360 Degree Media. Pune | 2023-08-26 00:00:00.000000 |
+|                 1 | 360 Degree Media. Pune | 2023-08-28 00:00:00.000000 |
++-------------------+------------------------+----------------------------+
+
+11. Manager wants to know the order's status of all his clients that are right now in dispatch
+
+select c.client_name,d.dispatch_entry_no,d.date,d.order_id,p.product_name,d.achieved,k.company_name
+from dispatch d
+join orders o on d.order_id=o.order_id 
+join product p on p.product_id=d.product_id
+join client c on c.client_id=o.client_id
+join company k on k.company_id=o.company_id
+where k.company_id=2
+order by d.date;
+
+
+12. Company Manager wants to see for which order which machine is allocated.
+
+select o.order_id,m.machine_name,c.company_name
+from production pk
+join orders o on o.order_id=pk.order_id
+join company c on c.company_id=o.company_id
+join machines m on m.company_id=c.company_id
+where c.company_id=5;
+
+
++----------+-------------------+---------------+
+| order_id | machine_name      | company_name  |
++----------+-------------------+---------------+
+|        2 | VMC               | Ashok Leyland |
+|        2 | Grinding          | Ashok Leyland |
+|        2 | drill machine     | Ashok Leyland |
+|        2 | Hand Polishimg    | Ashok Leyland |
+|        2 | ScrewDriver       | Ashok Leyland |
+|        2 | Top Drill machine | Ashok Leyland |
+|        2 | Lathe Machine     | Ashok Leyland |
+|        2 |                   | Ashok Leyland |
+|        2 | VMC               | Ashok Leyland |
+|        2 | Grinding          | Ashok Leyland |
+|        2 | drill machine     | Ashok Leyland |
+|        2 | Hand Polishimg    | Ashok Leyland |
+|        2 | ScrewDriver       | Ashok Leyland |
+|        2 | Top Drill machine | Ashok Leyland |
+|        2 | Lathe Machine     | Ashok Leyland |
+|        2 |                   | Ashok Leyland |
+|        3 | VMC               | Ashok Leyland |
+|        3 | Grinding          | Ashok Leyland |
+|        3 | drill machine     | Ashok Leyland |
+|        3 | Hand Polishimg    | Ashok Leyland |
+|        3 | ScrewDriver       | Ashok Leyland |
+|        3 | Top Drill machine | Ashok Leyland |
+|        3 | Lathe Machine     | Ashok Leyland |
+|        3 |                   | Ashok Leyland |
++----------+-------------------+---------------+
+  select o.order_id,(m.machine_name),c.company_name
+     from production pk
+     join orders o on o.order_id=pk.order_id
+     join company c on c.company_id=o.company_id
+     join machines m on m.company_id=c.company_id
+     where c.company_id=5
+group by o.order_id;
