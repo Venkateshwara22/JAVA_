@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,4 +62,13 @@ public class bikesservice {
     	}
     	return BikeAndBrand;
     	}
+    
+    public Set<String> getDistinctBrand(){
+    	return brepo.getDistinctBrands();
+    }
+    
+    public void updateBikePricesBelowMax(int maxPrice) {
+    	brepo.updateBikePricesBelowMax(maxPrice);
+    }
+   
 }

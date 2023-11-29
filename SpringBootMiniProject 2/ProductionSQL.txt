@@ -33,11 +33,12 @@ Gear:
 |          5 | Rack and Pinion | Titanium        | 65.00 |
 +------------+-----------------+-----------------+-------+
 
+Queries:
+
 select sum(p.quantityproduced * g.rate) as totalamount
 from gprod p
 join gear g on p.geartypeid = g.geartypeid
 where g.geartypename = 'helical gear';
-
 +-------------+
 | totalamount |
 +-------------+
@@ -49,10 +50,61 @@ select p.productiondate, g.geartypename, p.quantityproduced * g.rate as amount
 from gprod p 
 join gear g on p.geartypeid = g.geartypeid 
 where g.geartypename = 'worm gear';
-
 +----------------+--------------+----------+
 | productiondate | geartypename | amount   |
 +----------------+--------------+----------+
 | 2023-04-10     | Worm Gear    |  6600.00 |
 | 2023-07-09     | Worm Gear    | 23100.00 |
 +----------------+--------------+----------+
+
+
+select g.geartypeid, g.geartypename, g.material, g.rate, p.productionid, p.productiondate, p.quantityproduced
+from gear g
+left join gprod p on g.geartypeid = p.geartypeid;
+
+
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+| geartypeid | geartypename    | material        | rate  | productionid | productiondate | quantityproduced |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+|          1 | Spur Gear       | Steel           | 25.00 |            1 | 2023-01-15     |              100 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            2 | 2023-02-20     |              150 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            6 | 2023-05-04     |              500 |
+|          3 | Bevel Gear      | Brass           | 45.00 |            3 | 2023-03-25     |               80 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            4 | 2023-04-10     |              120 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            7 | 2023-07-09     |              420 |
+|          5 | Rack and Pinion | Titanium        | 65.00 |            5 | 2023-05-05     |              200 |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+
+
+select p.productionid, p.geartypeid,  p.manufacturerid, p.productiondate, p.quantityproduced, g.geartypename, g.material, g.rate
+from gprod p
+right join gear g on p.geartypeid = g.geartypeid;
+
+
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | GearTypeName    | Material        | Rate  |
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+|            1 |          1 |              1 | 2023-01-15     |              100 | Spur Gear       | Steel           | 25.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 | Helical Gear    | Aluminum        | 35.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | Helical Gear    | Aluminum        | 35.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 | Bevel Gear      | Brass           | 45.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 | Worm Gear       | Stainless Steel | 55.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | Worm Gear       | Stainless Steel | 55.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | Rack and Pinion | Titanium        | 65.00 |
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+
+
+select g.geartypeid, g.geartypename, g.material, g.rate, p.productionid, p.productiondate, p.quantityproduced 
+from gear g 
+inner join gprod p on g.geartypeid = p.geartypeid;
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+| geartypeid | geartypename    | material        | rate  | productionid | productiondate | quantityproduced |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+|          1 | Spur Gear       | Steel           | 25.00 |            1 | 2023-01-15     |              100 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            2 | 2023-02-20     |              150 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            6 | 2023-05-04     |              500 |
+|          3 | Bevel Gear      | Brass           | 45.00 |            3 | 2023-03-25     |               80 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            4 | 2023-04-10     |              120 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            7 | 2023-07-09     |              420 |
+|          5 | Rack and Pinion | Titanium        | 65.00 |            5 | 2023-05-05     |              200 |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+

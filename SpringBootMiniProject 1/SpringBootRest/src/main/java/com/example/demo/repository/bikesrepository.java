@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,4 +35,13 @@ public interface bikesrepository extends JpaRepository<bikes, Integer> {
 	//Using Object allows for flexibility in handling different data types that may be returned from the database columns.
 	//Since there are multiple columns selected, each row in the result set is represented as an array of objects.
 	//The array elements correspond to the selected columns in the order they appear in the query.
+	
+	@Query("select distinct b.brand from bikes b")
+	public Set<String> getDistinctBrands();
+	
+	  @Modifying
+	  @Query("update bikes b set b.bprice = b.bprice + 2000 where b.bprice < :maxPrice")
+	    void updateBikePricesBelowMax(@Param("maxPrice") int maxPrice);
+
+
 }
