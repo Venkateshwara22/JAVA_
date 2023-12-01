@@ -1,0 +1,537 @@
+<<<<<<< HEAD
+GProd:
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 |  3600.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | 13000.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            8 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            9 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|           10 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
+|           11 |          1 |              3 | 2023-12-20     |              250 |  6250.00 |
+|           12 |          1 |              3 | 2024-01-11     |              600 | 15000.00 |
+|           13 |          1 |              1 | 2024-01-25     |              500 | 12500.00 |
+|           14 |          2 |              5 | 2024-01-14     |              400 | 14000.00 |
+|           15 |          6 |              2 | 2024-01-02     |               30 |  1950.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+
+MGF:
++----------------+----------------------+------------+-------------+
+| ManufacturerID | ManufacturerName     | Location   | FoundedYear |
++----------------+----------------------+------------+-------------+
+|              1 | Gear Motion          | Earth      |        1990 |
+|              2 | Rochester Gears      | Soveriegn  |        1985 |
+|              3 | Cleaveland Gears     | KnowWhere  |        2000 |
+|              4 | Precision Gears Ltd. | Xandar     |        1975 |
+|              5 | Global Gearworks     | Asgard     |        1995 |
+|              6 | Stark Industries     | California |        1939 |
++----------------+----------------------+------------+-------------+
+
+Gear:
++------------+-----------------+---------------------+-------+
+| GearTypeID | GearTypeName    | Material            | Rate  |
++------------+-----------------+---------------------+-------+
+|          1 | Spur Gear       | Steel               | 25.00 |
+|          2 | Helical Gear    | Aluminum            | 35.00 |
+|          3 | Bevel Gear      | Brass               | 45.00 |
+|          4 | Worm Gear       | Stainless Steel     | 55.00 |
+|          5 | Rack and Pinion | Titanium            | 65.00 |
+|          6 | miter gear      | high strength steel | 65.00 |
++------------+-----------------+---------------------+-------+
+
+Queries:
+
+select sum(p.quantityproduced * g.rate) as totalamount
+from gprod p
+join gear g on p.geartypeid = g.geartypeid
+where g.geartypename = 'helical gear';
++-------------+
+| totalamount |
++-------------+
+|    22750.00 |
++-------------+
+
+
+select p.productiondate, g.geartypename, p.quantityproduced * g.rate as amount 
+from gprod p 
+join gear g on p.geartypeid = g.geartypeid 
+where g.geartypename = 'worm gear';
++----------------+--------------+----------+
+| productiondate | geartypename | amount   |
++----------------+--------------+----------+
+| 2023-04-10     | Worm Gear    |  6600.00 |
+| 2023-07-09     | Worm Gear    | 23100.00 |
++----------------+--------------+----------+
+
+
+select g.geartypeid, g.geartypename, g.material, g.rate, p.productionid, p.productiondate, p.quantityproduced
+from gear g
+left join gprod p on g.geartypeid = p.geartypeid;
+
+
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+| geartypeid | geartypename    | material        | rate  | productionid | productiondate | quantityproduced |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+|          1 | Spur Gear       | Steel           | 25.00 |            1 | 2023-01-15     |              100 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            2 | 2023-02-20     |              150 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            6 | 2023-05-04     |              500 |
+|          3 | Bevel Gear      | Brass           | 45.00 |            3 | 2023-03-25     |               80 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            4 | 2023-04-10     |              120 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            7 | 2023-07-09     |              420 |
+|          5 | Rack and Pinion | Titanium        | 65.00 |            5 | 2023-05-05     |              200 |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+
+
+select p.productionid, p.geartypeid,  p.manufacturerid, p.productiondate, p.quantityproduced, g.geartypename, g.material, g.rate
+from gprod p
+right join gear g on p.geartypeid = g.geartypeid;
+
+
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | GearTypeName    | Material        | Rate  |
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+|            1 |          1 |              1 | 2023-01-15     |              100 | Spur Gear       | Steel           | 25.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 | Helical Gear    | Aluminum        | 35.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | Helical Gear    | Aluminum        | 35.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 | Bevel Gear      | Brass           | 45.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 | Worm Gear       | Stainless Steel | 55.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | Worm Gear       | Stainless Steel | 55.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | Rack and Pinion | Titanium        | 65.00 |
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+
+
+select g.geartypeid, g.geartypename, g.material, g.rate, p.productionid, p.productiondate, p.quantityproduced 
+from gear g 
+inner join gprod p on g.geartypeid = p.geartypeid;
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+| geartypeid | geartypename    | material        | rate  | productionid | productiondate | quantityproduced |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+|          1 | Spur Gear       | Steel           | 25.00 |            1 | 2023-01-15     |              100 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            2 | 2023-02-20     |              150 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            6 | 2023-05-04     |              500 |
+|          3 | Bevel Gear      | Brass           | 45.00 |            3 | 2023-03-25     |               80 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            4 | 2023-04-10     |              120 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            7 | 2023-07-09     |              420 |
+|          5 | Rack and Pinion | Titanium        | 65.00 |            5 | 2023-05-05     |              200 |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+
+procedure to calculate total qty:
+
+delimiter //
+create procedure total_qty()
+begin
+select sum(quantityproduced) as total_qty
+from gprod;
+end//
+delimiter;
++-----------+
+| total_qty |
++-----------+
+|      2070 |
++-----------+
+
+
+stored procedure to insert data into mgf table;
+
+delimiter //
+create procedure insert_mgf (
+    in p_manufacturerid int,
+    in p_manufacturername varchar(255),
+    in p_location varchar(255),
+    in p_foundedyear int
+)
+begin
+    insert into mgf (manufacturerid, manufacturername, location, foundedyear)
+    values (p_manufacturerid, p_manufacturername, p_location, p_foundedyear);
+end //
+delimiter ;
+
+call insert_mgf(6, 'Stark Industries', 'California', 1939);
+
+
+stored data to insert data in gear table
+
+delimiter //
+create procedure insert_gear(
+    in g_geartypeid int,
+    in g_geartypename varchar(255),
+    in g_material varchar(255),
+    in g_rate decimal(10,2)
+)
+begin
+    insert into gear(geartypeid, geartypename, material, rate)
+    values (g_geartypeid, g_geartypename, g_material, g_rate);
+end //
+delimiter ;
+
+call insert_gear(6, 'miter gear', hss, 65.00)';
+
+UPDATE gprod AS g
+JOIN gear AS gg ON g.geartypeid = gg.geartypeid
+SET g.amount = g.quantityproduced * gg.rate;
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 |  3600.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | 13000.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            8 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            9 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|           10 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+
+
+select amount
+from gprod
+order by amount desc
+limit 3,1
+(fourth highest amount)
++----------+
+| amount   |
++----------+
+| 17500.00 |
++----------+
+
+
+trigger to calculate amount in gprod table;
+
+delimiter //
+create trigger amt_per_qty
+before insert on gprod
+for each row
+begin
+set new.amount=new.quantityproduced*(
+select rate from gear 
+where geartypeid = new.geartypeid 
+limit 1);
+end//
+delimiter;
+
+INSERT INTO gprod (ProductionID, GearTypeID, ManufacturerID, ProductionDate, QuantityProduced)
+VALUES (13, 1, 3, '2024-01-11', 600);
+
+
+Procedure to maintain the id in sequence;
+delimiter //
+create procedure update_id(in deleted_id int)
+begin
+elete from gprod where productionid = deleted_id;
+update gprod set productionid = productionid - 1 
+where productionid > deleted_id;
+end //
+delimiter ;
+
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            4 |          5 |              5 | 2023-05-05     |              200 | 13000.00 |
+|            5 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            6 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            7 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            8 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|            9 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
+|           10 |          1 |              3 | 2023-12-20     |              250 |  6250.00 |
+|           11 |          1 |              3 | 2024-01-11     |              600 | 15000.00 |
+|           12 |          2 |              5 | 2024-01-14     |              400 | 14000.00 |
+|           13 |          6 |              2 | 2024-01-02     |               30 |  1950.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+
+CALL delete_and_update_production_id(4);
+
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            4 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            5 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            6 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            7 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|            8 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
+|            9 |          1 |              3 | 2023-12-20     |              250 |  6250.00 |
+|           10 |          1 |              3 | 2024-01-11     |              600 | 15000.00 |
+|           11 |          2 |              5 | 2024-01-14     |              400 | 14000.00 |
+|           12 |          6 |              2 | 2024-01-02     |               30 |  1950.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+=======
+GProd:
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 |  3600.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | 13000.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            8 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            9 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|           10 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
+|           11 |          1 |              3 | 2023-12-20     |              250 |  6250.00 |
+|           12 |          1 |              3 | 2024-01-11     |              600 | 15000.00 |
+|           13 |          1 |              1 | 2024-01-25     |              500 | 12500.00 |
+|           14 |          2 |              5 | 2024-01-14     |              400 | 14000.00 |
+|           15 |          6 |              2 | 2024-01-02     |               30 |  1950.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+
+MGF:
++----------------+----------------------+------------+-------------+
+| ManufacturerID | ManufacturerName     | Location   | FoundedYear |
++----------------+----------------------+------------+-------------+
+|              1 | Gear Motion          | Earth      |        1990 |
+|              2 | Rochester Gears      | Soveriegn  |        1985 |
+|              3 | Cleaveland Gears     | KnowWhere  |        2000 |
+|              4 | Precision Gears Ltd. | Xandar     |        1975 |
+|              5 | Global Gearworks     | Asgard     |        1995 |
+|              6 | Stark Industries     | California |        1939 |
++----------------+----------------------+------------+-------------+
+
+Gear:
++------------+-----------------+---------------------+-------+
+| GearTypeID | GearTypeName    | Material            | Rate  |
++------------+-----------------+---------------------+-------+
+|          1 | Spur Gear       | Steel               | 25.00 |
+|          2 | Helical Gear    | Aluminum            | 35.00 |
+|          3 | Bevel Gear      | Brass               | 45.00 |
+|          4 | Worm Gear       | Stainless Steel     | 55.00 |
+|          5 | Rack and Pinion | Titanium            | 65.00 |
+|          6 | miter gear      | high strength steel | 65.00 |
++------------+-----------------+---------------------+-------+
+
+Queries:
+
+select sum(p.quantityproduced * g.rate) as totalamount
+from gprod p
+join gear g on p.geartypeid = g.geartypeid
+where g.geartypename = 'helical gear';
++-------------+
+| totalamount |
++-------------+
+|    22750.00 |
++-------------+
+
+
+select p.productiondate, g.geartypename, p.quantityproduced * g.rate as amount 
+from gprod p 
+join gear g on p.geartypeid = g.geartypeid 
+where g.geartypename = 'worm gear';
++----------------+--------------+----------+
+| productiondate | geartypename | amount   |
++----------------+--------------+----------+
+| 2023-04-10     | Worm Gear    |  6600.00 |
+| 2023-07-09     | Worm Gear    | 23100.00 |
++----------------+--------------+----------+
+
+
+select g.geartypeid, g.geartypename, g.material, g.rate, p.productionid, p.productiondate, p.quantityproduced
+from gear g
+left join gprod p on g.geartypeid = p.geartypeid;
+
+
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+| geartypeid | geartypename    | material        | rate  | productionid | productiondate | quantityproduced |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+|          1 | Spur Gear       | Steel           | 25.00 |            1 | 2023-01-15     |              100 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            2 | 2023-02-20     |              150 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            6 | 2023-05-04     |              500 |
+|          3 | Bevel Gear      | Brass           | 45.00 |            3 | 2023-03-25     |               80 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            4 | 2023-04-10     |              120 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            7 | 2023-07-09     |              420 |
+|          5 | Rack and Pinion | Titanium        | 65.00 |            5 | 2023-05-05     |              200 |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+
+
+select p.productionid, p.geartypeid,  p.manufacturerid, p.productiondate, p.quantityproduced, g.geartypename, g.material, g.rate
+from gprod p
+right join gear g on p.geartypeid = g.geartypeid;
+
+
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | GearTypeName    | Material        | Rate  |
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+|            1 |          1 |              1 | 2023-01-15     |              100 | Spur Gear       | Steel           | 25.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 | Helical Gear    | Aluminum        | 35.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | Helical Gear    | Aluminum        | 35.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 | Bevel Gear      | Brass           | 45.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 | Worm Gear       | Stainless Steel | 55.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | Worm Gear       | Stainless Steel | 55.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | Rack and Pinion | Titanium        | 65.00 |
++--------------+------------+----------------+----------------+------------------+-----------------+-----------------+-------+
+
+
+select g.geartypeid, g.geartypename, g.material, g.rate, p.productionid, p.productiondate, p.quantityproduced 
+from gear g 
+inner join gprod p on g.geartypeid = p.geartypeid;
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+| geartypeid | geartypename    | material        | rate  | productionid | productiondate | quantityproduced |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+|          1 | Spur Gear       | Steel           | 25.00 |            1 | 2023-01-15     |              100 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            2 | 2023-02-20     |              150 |
+|          2 | Helical Gear    | Aluminum        | 35.00 |            6 | 2023-05-04     |              500 |
+|          3 | Bevel Gear      | Brass           | 45.00 |            3 | 2023-03-25     |               80 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            4 | 2023-04-10     |              120 |
+|          4 | Worm Gear       | Stainless Steel | 55.00 |            7 | 2023-07-09     |              420 |
+|          5 | Rack and Pinion | Titanium        | 65.00 |            5 | 2023-05-05     |              200 |
++------------+-----------------+-----------------+-------+--------------+----------------+------------------+
+
+procedure to calculate total qty:
+
+delimiter //
+create procedure total_qty()
+begin
+select sum(quantityproduced) as total_qty
+from gprod;
+end//
+delimiter;
++-----------+
+| total_qty |
++-----------+
+|      2070 |
++-----------+
+
+
+stored procedure to insert data into mgf table;
+
+delimiter //
+create procedure insert_mgf (
+    in p_manufacturerid int,
+    in p_manufacturername varchar(255),
+    in p_location varchar(255),
+    in p_foundedyear int
+)
+begin
+    insert into mgf (manufacturerid, manufacturername, location, foundedyear)
+    values (p_manufacturerid, p_manufacturername, p_location, p_foundedyear);
+end //
+delimiter ;
+
+call insert_mgf(6, 'Stark Industries', 'California', 1939);
+
+
+stored data to insert data in gear table
+
+delimiter //
+create procedure insert_gear(
+    in g_geartypeid int,
+    in g_geartypename varchar(255),
+    in g_material varchar(255),
+    in g_rate decimal(10,2)
+)
+begin
+    insert into gear(geartypeid, geartypename, material, rate)
+    values (g_geartypeid, g_geartypename, g_material, g_rate);
+end //
+delimiter ;
+
+call insert_gear(6, 'miter gear', hss, 65.00)';
+
+UPDATE gprod AS g
+JOIN gear AS gg ON g.geartypeid = gg.geartypeid
+SET g.amount = g.quantityproduced * gg.rate;
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          3 |              3 | 2023-03-25     |               80 |  3600.00 |
+|            4 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            5 |          5 |              5 | 2023-05-05     |              200 | 13000.00 |
+|            6 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            7 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            8 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            9 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|           10 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+
+
+select amount
+from gprod
+order by amount desc
+limit 3,1
+(fourth highest amount)
++----------+
+| amount   |
++----------+
+| 17500.00 |
++----------+
+
+
+trigger to calculate amount in gprod table;
+
+delimiter //
+create trigger amt_per_qty
+before insert on gprod
+for each row
+begin
+set new.amount=new.quantityproduced*(
+select rate from gear 
+where geartypeid = new.geartypeid 
+limit 1);
+end//
+delimiter;
+
+INSERT INTO gprod (ProductionID, GearTypeID, ManufacturerID, ProductionDate, QuantityProduced)
+VALUES (13, 1, 3, '2024-01-11', 600);
+
+
+Procedure to maintain the id in sequence;
+delimiter //
+create procedure update_id(in deleted_id int)
+begin
+elete from gprod where productionid = deleted_id;
+update gprod set productionid = productionid - 1 
+where productionid > deleted_id;
+end //
+delimiter ;
+
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            4 |          5 |              5 | 2023-05-05     |              200 | 13000.00 |
+|            5 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            6 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            7 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            8 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|            9 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
+|           10 |          1 |              3 | 2023-12-20     |              250 |  6250.00 |
+|           11 |          1 |              3 | 2024-01-11     |              600 | 15000.00 |
+|           12 |          2 |              5 | 2024-01-14     |              400 | 14000.00 |
+|           13 |          6 |              2 | 2024-01-02     |               30 |  1950.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+
+CALL delete_and_update_production_id(4);
+
++--------------+------------+----------------+----------------+------------------+----------+
+| ProductionID | GearTypeID | ManufacturerID | ProductionDate | QuantityProduced | amount   |
++--------------+------------+----------------+----------------+------------------+----------+
+|            1 |          1 |              1 | 2023-01-15     |              100 |  2500.00 |
+|            2 |          2 |              2 | 2023-02-20     |              150 |  5250.00 |
+|            3 |          4 |              4 | 2023-04-10     |              120 |  6600.00 |
+|            4 |          2 |              3 | 2023-05-04     |              500 | 17500.00 |
+|            5 |          4 |              1 | 2023-07-09     |              420 | 23100.00 |
+|            6 |          5 |              4 | 2023-12-01     |              500 | 32500.00 |
+|            7 |          3 |              5 | 2023-12-15     |              300 | 13500.00 |
+|            8 |          2 |              4 | 2023-12-17     |              700 | 24500.00 |
+|            9 |          1 |              3 | 2023-12-20     |              250 |  6250.00 |
+|           10 |          1 |              3 | 2024-01-11     |              600 | 15000.00 |
+|           11 |          2 |              5 | 2024-01-14     |              400 | 14000.00 |
+|           12 |          6 |              2 | 2024-01-02     |               30 |  1950.00 |
++--------------+------------+----------------+----------------+------------------+----------+
+>>>>>>> ee6db4838b26e0ce090fc7a35f6fefee18e0af0c
