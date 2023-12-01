@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('img2.jpg'); 
+  background-size: cover;
+  background-attachment: fixed; 
+  background-position: center;
+  color: white; 
+}
+
+.App {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.post {
+  width: 800px;
+  height: 300px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  border: 5px solid rgb(255, 218, 6);
+  font-family: 'Times New Roman', Times, serif;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.post:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  cursor: pointer;
+}
+
+.post .title {
+  flex: 20%;
+  border-bottom: 1px solid yellow;
+  background-color: yellow;
+  display: grid;
+  place-content: center;
+  color: black;
+  font-size: 40px; 
+  font-weight: bold; 
+}
+
+.post .body {
+  flex: 60%;
+  display: grid;
+  font-size: 20px; 
+  place-content: center;
+}
+
+.post .footer {
+  flex: 20%;
+  border-top: 1px solid green;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  background-color: dodgerblue;
+  color: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  font-size: 25px; 
+  font-weight: bold; 
+}
