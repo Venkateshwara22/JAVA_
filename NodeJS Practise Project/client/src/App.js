@@ -1,29 +1,28 @@
 
+//import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import './App.css';
-import axios from "axios";
-import {useEffect, useState} from "react";
+import CreatePost from './Pages/CreatePost.';
+import Home from './Pages/Home';
+import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 
+//sometimes switch wont work then download the lower version of react-router-dom or use routes
 function App() {
 
-  const [listOfPost, setListOfPosts] = useState([]);
-
-  useEffect(()=>{
-    axios.get("http://localhost:3001/posts").then((response)=>{
-    setListOfPosts(response.data);
-    });
-  },[] );
+  
   
   return (
     <div className="App">
-    {listOfPost.map((value, key)=>{
-      return(
-       <div className='post'>
-        <div className='title'> {value.title}</div>
-        <div className='body'> {value.postText}</div>
-        <div className='footer'> {value.username}</div>
-        </div>
-      );
-  })}
+   <Router>
+   <Link to="/createPost" style={{ fontSize: '28px', fontFamily: 'Roboto, sans-serif', textDecoration: 'none', color: 'yellow' }}>
+   📝Add Your Favourite Movies📝
+  </Link>
+ 
+  <Switch>
+  <Route path="/" exact component={Home} />
+  <Route path="/createPost" exact component={CreatePost} /> {/* Fix the typo here */}
+</Switch>
+
+   </Router>
     </div>
   );
 }
