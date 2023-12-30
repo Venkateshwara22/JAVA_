@@ -14,4 +14,10 @@ await Posts.create(post);//created data in the similar format avaiable in the Po
 res.json(post);
 });
 
+router.get('/byId/:id', async(req,res)=>{
+const id= req.params.id
+const post= await Posts.findByPk(id)
+res.json(post);
+});
+
 module.exports = router;

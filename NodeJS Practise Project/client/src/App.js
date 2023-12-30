@@ -4,7 +4,7 @@ import './App.css';
 import CreatePost from './Pages/CreatePost.';
 import Home from './Pages/Home';
 import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
-
+import Post from './Pages/Post';
 //sometimes switch wont work then download the lower version of react-router-dom or use routes
 function App() {
 
@@ -19,7 +19,8 @@ function App() {
  
   <Switch>
   <Route path="/" exact component={Home} />
-  <Route path="/createPost" exact component={CreatePost} /> {/* Fix the typo here */}
+  <Route path="/createPost" exact component={CreatePost} /> 
+  <Route path="/post/:id" exact component={Post} /> 
 </Switch>
 
    </Router>
